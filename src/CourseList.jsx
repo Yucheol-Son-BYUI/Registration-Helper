@@ -28,7 +28,7 @@ const ListContainer = styled.div`
     background-color: rgba(128, 128, 128, 0.7);
   }
 `
-function CourseList({ courses, onDeleteCourse, onAddCourse, selected, onSelectCourse, onUnSelectCourse, onModalOpen }) {
+function CourseList({ courses, onDeleteCourse, selected, onSelectCourse, onUnSelectCourse, onModalOpen }) {
   return (
     <ListContainer>
         {courses.map((course) => (

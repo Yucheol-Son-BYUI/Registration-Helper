@@ -28,9 +28,8 @@ const BuiltInCell = styled.div`
   margin: 0;}
 `;
 const CourseTime = ({ area, courseId }) => {
-  const courseColor = stringToColor(courseId); // id로 색상 계산
+  const courseColor = stringToColor(courseId);
 
-  // 스타일 적용
   const CourseTimeStyled = styled.div`
     grid-area: ${area};
     background-color: ${courseColor};
