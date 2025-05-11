@@ -1,0 +1,8 @@
+:root {
+  --primary-color: rgb(255, 247, 173);
+  --secondary-color: #2ecc71;
+  --accent-color: #e74c3c;
+  --background-color: rgb(255, 247, 173);
+  --selected-color: #2647ff;
+  --text-color: #333;
+}
