@@ -7,7 +7,7 @@ import TimeTable from './TimeTable.jsx'
 import ModalCourseForm from './ModalCourseForm.jsx'
 
 // firebase import
-import { db } from "../firebase.config";
+import { db } from "./firebase.config.js";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const AppContainer = styled.main`
