@@ -7,8 +7,9 @@ import TimeTable from './TimeTable.jsx'
 import ModalCourseForm from './ModalCourseForm.jsx'
 
 // firebase import
-import { db } from "./firebase.config.js";
+import { auth, db } from "./firebase.config.js";
 import { doc, setDoc, getDoc } from "firebase/firestore";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const AppContainer = styled.main`
     display:grid;
@@ -17,15 +18,32 @@ const AppContainer = styled.main`
     background-color:var(--background-color);
     grid-template-columns: 13em 3fr;
   `;
+async function loginOrGetUid() {
+  if (!auth.currentUser) {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      return result.user.uid;
+    } catch (loginError) {
+      console.error("Google login failed:", loginError);
+      return null;
+    }
+  }
+  return auth.currentUser.uid;
+}
 function App() {
   // const loadCoursesFromLocalStorage = () => {
   //   const savedCourses = localStorage.getItem('courses');
   //     return savedCourses ? JSON.parse(savedCourses) : [];  // load from localStorage
   // };
+  
   const loadCoursesFromFirestore = async () => {
     try {
-      const adminDocRef = doc(db, "courses", "admin");
+      // try login. "admin" is a default id for development process.
+      // const uid = await loginOrGetUid() || "admin";
+      // if(!uid) return []; //if login failed
 
+      const adminDocRef = doc(db, "courses", "admin");
       const snap = await getDoc(adminDocRef);
 
       if (!snap.exists()) {
@@ -74,7 +92,14 @@ function App() {
   // };
   const saveDataToFirestore = async () => {
     try {
-      const document = doc(db, "courses", "admin");
+      const uid = await loginOrGetUid();
+      console.log("logined uid: ",uid)
+      if (!uid) {
+        console.warn("saveDataToFirestore: failed login");
+        return;
+      }
+
+      const document = doc(db, "courses", uid);
       const payload = {
         courses: courses,
       };
