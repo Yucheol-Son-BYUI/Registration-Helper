@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/Yucheol-Son-BYUI/Registration-Helper",
+  "homepage": "https://yucheol-son-byui.github.io/Registration-Helper/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
