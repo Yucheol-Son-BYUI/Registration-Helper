@@ -74,11 +74,11 @@ function stringToColor(str) {
 
   return `rgb(${r}, ${g}, ${b})`;
 }
-function OnCampusCourseTable({courses, selected, onUnselectCourse, onSave}){
+function OnCampusCourseTable({courses, selected, onUnselectCourse, onSave, onLoad}){
   
   return(
     <TableLayout>
-      <BuiltInCell style={{gridArea: "1/1"}}><button onClick={onSave}>Save</button></BuiltInCell>
+      <BuiltInCell style={{gridArea: "1/1"}}><button onClick={onSave}>Save</button><button onClick={onLoad}>Load</button></BuiltInCell>
       <BuiltInCell style={{gridArea: "mo"}}>Monday</BuiltInCell>
       <BuiltInCell style={{gridArea: "tu"}}>Tuesday</BuiltInCell>
       <BuiltInCell style={{gridArea: "we"}}>Wednesday</BuiltInCell>

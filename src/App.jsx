@@ -32,36 +32,40 @@ async function loginOrGetUid() {
   return auth.currentUser.uid;
 }
 function App() {
-  // const loadCoursesFromLocalStorage = () => {
-  //   const savedCourses = localStorage.getItem('courses');
-  //     return savedCourses ? JSON.parse(savedCourses) : [];  // load from localStorage
-  // };
+  const loadCoursesFromLocalStorage = () => {
+    const savedCourses = localStorage.getItem('courses');
+      return savedCourses ? JSON.parse(savedCourses) : [];  // load from localStorage
+  };
   
   const loadCoursesFromFirestore = async () => {
     try {
       // try login. "admin" is a default id for development process.
-      // const uid = await loginOrGetUid() || "admin";
-      // if(!uid) return []; //if login failed
+      const uid = await loginOrGetUid();
+      if(!uid) return loadCoursesFromLocalStorage(); //if login failed
 
       const adminDocRef = doc(db, "courses", "admin");
       const snap = await getDoc(adminDocRef);
 
       if (!snap.exists()) {
         console.warn("Firestore: 'courses/admin' does not exist");
-        return [];
+        setCourses([]);
+        return;
       }
 
       const data = snap.data();
 
       if (Array.isArray(data.courses)) {
-        return data.courses;
+        setCourses(data.courses);
+        return;
       } else {
         console.warn("Firestore: 'courses' is not an array", data.courses);
-        return [];
+        setCourses([]);
+        return;
       }
     } catch (error) {
       console.error("Error loading courses from Firestore:", error);
-      return [];
+        setCourses([]);
+        return;
     }
   };
   // const [courses, setCourses] = useState(loadCoursesFromFirestore);
@@ -133,7 +137,7 @@ function App() {
   return (
     <AppContainer>
       <CourseList courses={courses} selected={selectedCourses} onDeleteCourse={handleDeleteCourse} onAddCourse={handleAddCourse} onSelectCourse={handleSelectCourse} onUnSelectCourse={handleUnSelectCourse} onModalOpen={setModalOpen}/>
-      <TimeTable courses={courses} selected = {selectedCourses} onUnselectCourse={handleUnSelectCourse} onSaveData={saveDataToFirestore}></TimeTable>
+      <TimeTable courses={courses} selected = {selectedCourses} onUnselectCourse={handleUnSelectCourse} onSaveData={saveDataToFirestore} onLoadData={loadCoursesFromFirestore}></TimeTable>
       {isModalOpen && (
         <ModalCourseForm 
           onAddCourse={handleAddCourse}

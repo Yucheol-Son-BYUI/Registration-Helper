@@ -7,10 +7,10 @@ const TableContainer = styled.div`
   padding: 1em;
   box-sizing: border-box;
 `
-function TimeTable({courses, selected, onUnselectCourse, onSaveData}){
+function TimeTable({courses, selected, onUnselectCourse, onSaveData, onLoadData}){
   return(
     <TableContainer>
-      <OnCampusCourseTable courses = {courses} selected={selected} onUnselectCourse={onUnselectCourse} onSave={onSaveData}></OnCampusCourseTable>
+      <OnCampusCourseTable courses = {courses} selected={selected} onUnselectCourse={onUnselectCourse} onSave={onSaveData} onLoad={onLoadData} ></OnCampusCourseTable>
       {/* <div className="onlineTable">onlineTable</div> */}
     </TableContainer>
   )
