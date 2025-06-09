@@ -37,13 +37,16 @@ function App() {
       return savedCourses ? JSON.parse(savedCourses) : [];  // load from localStorage
   };
   
+  // const [courses, setCourses] = useState(loadCoursesFromFirestore);
+  const [courses, setCourses] = useState([]);
   const loadCoursesFromFirestore = async () => {
+    console.log("start loadCoursesFromFirestore")
     try {
       // try login. "admin" is a default id for development process.
       const uid = await loginOrGetUid();
       if(!uid) return loadCoursesFromLocalStorage(); //if login failed
 
-      const adminDocRef = doc(db, "courses", "admin");
+      const adminDocRef = doc(db, "courses", uid);
       const snap = await getDoc(adminDocRef);
 
       if (!snap.exists()) {
@@ -56,6 +59,8 @@ function App() {
 
       if (Array.isArray(data.courses)) {
         setCourses(data.courses);
+        console.log("Succeed to load data from firestore")
+        console.log(data.courses)
         return;
       } else {
         console.warn("Firestore: 'courses' is not an array", data.courses);
@@ -68,16 +73,14 @@ function App() {
         return;
     }
   };
-  // const [courses, setCourses] = useState(loadCoursesFromFirestore);
-  const [courses, setCourses] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const loaded = await loadCoursesFromFirestore();
-      setCourses(loaded);
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const loaded = await loadCoursesFromFirestore();
+  //     setCourses(loaded);
+  //   };
+  //   fetchData();
+  // }, []);
   const loadSelectedFromLocalStorage = () => {
     const savedSelected = localStorage.getItem('selected');
       return savedSelected ? JSON.parse(savedSelected) : [];  // load from localStorage
